@@ -1,0 +1,6 @@
+bs4
+flask
+requests
+#setuptools
+python-telegram-bot
+configparser

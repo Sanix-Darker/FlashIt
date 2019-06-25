@@ -1,4 +1,5 @@
 <img src="./web/logo-27.png">
+
 # Flashit
 
 A nice system to be notify when there is soldes on products.
@@ -7,6 +8,11 @@ A nice system to be notify when there is soldes on products.
 
 - This source code is only for Educational purpose, am not responsible of the bas use of this code.
 - This project is not yet running Online!
+
+# DEMO:
+
+- See a full test on [Youtube](https://www.youtube.com/watch?v=PrbXV9MFuto)
+
 
 # Features:
 
@@ -40,10 +46,9 @@ python ./bot/main.py
 
 ```
 
-#Rendering:
+# Rendering:
 
 <img src="flashit.png">
-
 
 # Author
 

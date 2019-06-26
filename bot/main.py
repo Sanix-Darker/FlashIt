@@ -170,6 +170,7 @@ def echo_callback(bot, update):
                         r_json["code"] = row[0]
                         r_json["href"] = row[2]
                         r_json["percent"] = row[1]
+                        r_json["price"] = row[2]
                         #print(row)
                 else:
                     r_json["status"] = "error"
@@ -184,7 +185,7 @@ def echo_callback(bot, update):
                 
                 #print("------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + " \n-" + str(r_json["percent"]) + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n------------------")
                 bot.send_message(chat_id=update.message.chat_id,
-                                        text = "-----------------------------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + " \n-" + str(r_json["percent"]) + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n-----------------------------------------")
+                                        text = "-----------------------------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n-----------------------------------------")
             else:
 
                 bot.send_message(chat_id=update.message.chat_id,

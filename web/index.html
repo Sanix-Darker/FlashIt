@@ -1,6 +1,6 @@
-<html>
+<html style="overflow: hidden;">
 <head>
-    <link rel="shortcut icon" href="logo-27.png">
+    <link rel="shortcut icon" href="./images/logo-27.png">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -9,142 +9,113 @@
     <link href="css/main.css" rel="stylesheet" />
     <title>Flash It</title>
   </head>
-  <body >
-    <div class="s007">
-      <form>
-        <div class="inner-form">
-          <h1 id="titre">Flash it</h1>
-          <div class="basic-search">
-            <div class="input-field">
-              <div class="icon-wrap">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
-                  <path d="M18.869 19.162l-5.943-6.484c1.339-1.401 2.075-3.233 2.075-5.178 0-2.003-0.78-3.887-2.197-5.303s-3.3-2.197-5.303-2.197-3.887 0.78-5.303 2.197-2.197 3.3-2.197 5.303 0.78 3.887 2.197 5.303 3.3 2.197 5.303 2.197c1.726 0 3.362-0.579 4.688-1.645l5.943 6.483c0.099 0.108 0.233 0.162 0.369 0.162 0.121 0 0.242-0.043 0.338-0.131 0.204-0.187 0.217-0.503 0.031-0.706zM1 7.5c0-3.584 2.916-6.5 6.5-6.5s6.5 2.916 6.5 6.5-2.916 6.5-6.5 6.5-6.5-2.916-6.5-6.5z"></path>
-                </svg>
-              </div>
-              <input id="search" type="text" placeholder="Flash search..." />
-              <div class="result-count">
-                <span id="code"></span></div>
-            </div>
-          </div>
-          <div class="advance-search">
-            <span class="desc">Advanced Search</span>
-            <div class="row">
-              <div class="input-field">
-                <div class="input-select">
-                  <select data-trigger="" id="host" name="choices-single-defaul">
-                  </select>
+  <body>
+    <div style="transform: skew(0deg, -10deg);">
+        <div class="s007" style="background: #2095f2;">
+            <form>
+              <div class="inner-form" style="transform: skew(0deg, 10deg);">
+                <h1 id="titre">Flash it</h1>
+                <div class="basic-search">
+                  <div class="input-field">
+                    <div class="icon-wrap">
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M18.869 19.162l-5.943-6.484c1.339-1.401 2.075-3.233 2.075-5.178 0-2.003-0.78-3.887-2.197-5.303s-3.3-2.197-5.303-2.197-3.887 0.78-5.303 2.197-2.197 3.3-2.197 5.303 0.78 3.887 2.197 5.303 3.3 2.197 5.303 2.197c1.726 0 3.362-0.579 4.688-1.645l5.943 6.483c0.099 0.108 0.233 0.162 0.369 0.162 0.121 0 0.242-0.043 0.338-0.131 0.204-0.187 0.217-0.503 0.031-0.706zM1 7.5c0-3.584 2.916-6.5 6.5-6.5s6.5 2.916 6.5 6.5-2.916 6.5-6.5 6.5-6.5-2.916-6.5-6.5z"></path>
+                      </svg>
+                    </div>
+                    <input id="search" type="text" placeholder="Flash search..." />
+                    <div class="result-count">
+                      <span id="code"></span></div>
+                  </div>
                 </div>
-              </div>
-              <div class="input-field">
-                <div class="input-select">
-                  <select data-trigger=""  id="percent" name="choices-single-defaul">
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row third">
-              <div class="input-field">
-                <button class="btn-search" id="gogo">Search</button>
-                <!-- <button class="btn-delete" id="delete">Delete</button>-->
-              </div>
-            </div>
-
-            Results : <span id="estimated">0</span><br><hr>
-            <div id="results"></div>
-
-          </div>
-        </div>
-      </form>
       
+                <div class="advance-search">
+                  <span class="desc">Advanced Search</span>
+                  <div class="row">
+      
+                      <table style="width:100%">
+                          <tr>
+                            <td>
+                              <div class="input-field">
+                                <div class="input-select">
+                                  <label><span class="label">Website:</span> 
+                                      <select id="host"></select>
+                                  </label>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                                <div class="input-field">
+                                  <div class="input-select">
+                                    <label>
+                                      <span class="label">Level:</span>
+                                      <select id="level">
+                                        <option value="2">Extra - Low</option>
+                                        <option value="5">Low</option>
+                                        <option value="7">Average</option>
+                                        <option value="10">Top</option>
+                                        <option value="20">Hight</option>
+                                        <option value="35">Extra - Hight</option>
+                                      </select>
+                                    </label>
+                                  </div>
+                                </div>
+                              </td>
+                          </tr>
+                      </table>
+      
+                    <table style="width:100%">
+                      <tr>
+                        <td>
+                          <div class="input-field">
+                            <div class="input-select">
+                              <label>
+                                <span class="label">Percent:</span>
+                                <select id="percent"></select>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="input-field">
+                            <div class="input-select">
+                              <label><span class="label">Price_range:</span>
+                                <select id="price"></select>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+      
+                  </div>
+                  <div class="row third">
+                    <div class="input-field">
+                      <button class="btn-search" id="gogo">Search</button>
+                      <!-- <button class="btn-delete" id="delete">Delete</button>-->
+                    </div>
+                  </div>
+      
+                  Results : <span id="estimated">0</span><br><hr>
+                  <div id="results"></div>
+                  
+                </div>
+              </div>
+            </form>
+            
+          </div>
     </div>
+    <center>
+      <div id="author">
+        <b>
+          <a href="https://github.com/Sanix-Darker" target="_blank">
+            <img src="https://avatars2.githubusercontent.com/u/22576758?s=40&amp;v=4" ><br>
+            S@n1x d4rk3r.
+          </a>
+        </br>
+      </div>
+    </center>
 
-    <center><div id="author">by <b><a href="https://github.com/Sanix-Darker" target="_blank">🐼S@n1x d4rk3r.</a></b></div></center>
-    <script src="js/extention/choices.js"></script>
-    <script>
-      const apiLink = "http://127.0.0.1:7777";
-      const HOST = [
-              "https://jumia.cm",
-              "https://jumia.sn",
-              "https://www.jumia.com.ng",
-              "https://www.jumia.com.eg",
-              "https://www.jumia.ma",
-              "https://www.jumia.co.ke",
-              "https://www.jumia.ci",
-              "https://www.jumia.com.tn",
-              "https://www.jumia.dz",
-              "https://www.jumia.com.gh",
-              "https://www.jumia.sn",
-              "https://www.jumia.co.tz",
-              "https://www.jumia.ug",
-              "https://www.jumia.rw",
-              "https://www.jumia.com.ng"
-      ]
-      // Host box
-      var hostBox = document.getElementById('host');
-      for(var i = 0, l = HOST.length; i < l; i++){
-        var option = document.createElement("option");
-        option.text = HOST[i];
-        hostBox.options.add( option );
-      }
+    <script type="text/javascript" src="js/main.js"></script>
 
-      // Percent Host
-      var percentBox = document.getElementById('percent');
-      for(var i = 5, l = 100; i < l; i++){
-        var option = document.createElement("option");
-        option.text = "-"+i+"%";
-        option.value = i;
-        percentBox.options.add( option );
-      }
-
-      const choices = new Choices('select',
-      {
-        searchEnabled: false,
-        removeItemButton: true,
-        itemSelectText: '',
-      });
-
-      // 1. Create a new XMLHttpRequest object
-      let xhr = new XMLHttpRequest();
-      var resultBox = document.getElementById('results');
-
-      document.getElementById("gogo").onclick = function(e){
-        e.preventDefault();
-        document.getElementById("estimated").innerHTML = "Loading, please wait few seconds...";
-        document.getElementById('results').innerHTML = "";
-        document.getElementById('code').innerHTML = "";
-        // 2. Configure it: GET-request for the URL /article/.../load
-        xhr.open('GET', apiLink+'/flash?host='+document.getElementById("host").value+"&percent="+document.getElementById("percent").value+"&find="+document.getElementById("search").value);
-      
-        xhr.responseType = 'json';
-
-        // 3. Send the request over the network
-        xhr.send();
-
-        // 4. This will be called after the response is received
-        xhr.onload = function() {
-          if (xhr.status != 200) { // analyze HTTP status of the response
-            alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-          } else { // show the result
-            // alert(`Done, got ${xhr.response.length} bytes`); // responseText is the server
-            //console.log(xhr.response);
-            document.getElementById("code").innerHTML = xhr.response.code;
-            document.getElementById("estimated").innerHTML = xhr.response.fetched + " and " + xhr.response.filtered;
-
-            for(var i = 0, l = xhr.response.results.length; i < l; i++){
-              var format = "<div> > [ -"+xhr.response.results[i]["percent"]+"% ] <a class='result' href="+xhr.response.results[i]["href"]+" target='_blank'>"+xhr.response.results[i]["title"]+"</a></div><br>"
-              resultBox.innerHTML += format;
-            }
-
-          }
-        };
-
-        xhr.onerror = function() {
-          alert("Request failed");
-        };
-
-      };
-
-    </script>
-    
   </body>
 </html>

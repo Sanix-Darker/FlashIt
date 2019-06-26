@@ -1,4 +1,4 @@
-<img src="./web/logo-27.png">
+<img src="./web/images/logo-27.png">
 
 # Flashit
 

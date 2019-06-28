@@ -4,15 +4,9 @@
 
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify, request
-import requests, sqlite3
+import requests
 from hashlib import md5
 from datetime import datetime
-
-conn = sqlite3.connect('./flashit.db')
-c = conn.cursor()
-c.execute('create table if not exists ping (code string, percent string, price string, search string, _date string)')
-conn.commit()
-c.close()
 
 app = Flask(__name__)
 app.config['Secret'] = "Secret"
@@ -99,10 +93,6 @@ def index2():
                         elif(price != "0" and percent == "0" and child["class"][0] == "price" and "-old" not in child["class"]):
                             the_pricechildren = child.findChildren("span" , recursive=True)
                             product_price = int(the_pricechildren[0]["data-price"])
-                            # print("product_price: ", product_price)
-                            # print('price.split("-")[1]: ', price.split("-")[1])
-                            # print('float(product_price): ', float(product_price))
-                            # print('(float(price.split("-")[1]) < float(product_price)): ', (float(price.split("-")[1]) > float(product_price)))
                             if (child["class"][0] in price_classes and float(price.split("-")[1]) > float(product_price)):
                                 #print("- Href: "+result["href"],">>>> ", child.text)
                                 json_results.append({"title": str(result.text), "href": str(result["href"]), "percent": 0, "price": product_price})
@@ -115,15 +105,6 @@ def index2():
         else:
             json_results = sorted(json_results, key=lambda k: k['price'])[::-1]
             
-        if (len(json_results) == 0 and job == None):
-            code = str(MD5(search))[:10]
-            _date = (str(datetime.now())).split('.')[0]
-            print("> code:{}, percent:{}, search:{}, date:{}".format(code, percent, search.split("&")[0], _date))
-            conn = sqlite3.connect('./flashit.db')
-            c = conn.cursor()
-            c.execute('INSERT INTO ping VALUES (?,?,?,?,?)', (code, percent, price, search.split("&")[0], _date))
-            conn.commit()
-            c.close()
         # Build the response
         response = jsonify({'status':'success', 'code':code,  'fetched': str(results_size)+' fetched', 'filtered': str(len(json_results))+' filtered', "results": json_results })
     # except:

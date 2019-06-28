@@ -55,6 +55,12 @@ def index2():
             level = int(request.args.get('level'))
         except:
             level = 5
+            
+        try:
+            category = request.args.get('category')
+        except:
+            category = "0"
+            
         price = request.args.get('price')
         
         try:
@@ -68,7 +74,13 @@ def index2():
         percent_classes = ["sale-flag-percent"]
         price_classes = ["price"]
         for i in range(1, level):
-            search = host+"/catalog/?q="+find+"&page="+str(i)
+            search = ""
+            if category != "0":
+                search = category.replace("https://www.jumia.cm", host+"/")+"&page="+str(i)
+            else:
+                search = host+"/catalog/?q="+find+"&page="+str(i)
+            
+            print("search: ", search)
             results = getElts(requests.get(search))
             results_size += len(results)
             for result in results:

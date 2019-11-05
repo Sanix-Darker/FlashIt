@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # coding=utf-8
+
+# FlashIt Bot
 # main.py
 # Made by S@n1X-d4rk3r
 # This is the core where anything is done
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, RegexHandler, ConversationHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
@@ -10,6 +13,9 @@ from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 import logging
 from datetime import datetime
 import sqlite3
+import configparser as ConfigParser
+import json
+import os
 
 conn = sqlite3.connect('./flashit.db')
 c = conn.cursor()
@@ -21,7 +27,7 @@ with open('logs.log', 'w') as fill:
     fill.write(".")
 
 # Let's instantiate the database if it's not exist
-# if 
+# if
 
 # Create a custom logger
 logger = logging.getLogger(__file__)
@@ -36,28 +42,25 @@ logger.addHandler(f_handler)
 
 separator = "# -------------------------------------------------------------"
 
-import configparser as ConfigParser
 # Configs parameters configParser.get('your-config', 'path1')
-configParser = ConfigParser.RawConfigParser()   
+configParser = ConfigParser.RawConfigParser()
 configFilePath = r'config.txt'
 configParser.read(configFilePath)
 # Configs parameters
 TOKEN = configParser.get('flashitbot-config', 'token')
 
-import json
 # Lang management
 def get_lang_string_by_code(lang_code, code):
     with open('lang/'+lang_code+'.json', 'r+', encoding='utf-8') as f:
         lang_string = json.load(f)
         return lang_string[code]
 
-import os
 def presentation():
     #os.system("clear")
     print(separator)
-    print("# ----------------- Flashitbot Started! -------------------------")
+    print("[+] # ----------------- Flashitbot Started! -------------------------")
     print(separator)
-    print("#                                      By 🐼Sanix darker")
+    print("[+] #                                      By 🐼Sanix darker")
     print(separator)
 
 # To print a log and save it in logs.log
@@ -70,11 +73,11 @@ def printLog(command, Telegram_user):
 def reject_bots(bot, update):
     if(update.message.from_user.is_bot == True):
         logger.info(("OUPS BOT, not authorized here!"))
-        bot.send_message(chat_id=update.message.chat_id, 
+        bot.send_message(chat_id=update.message.chat_id,
                             text="NOT AUTHORIZED")
         return False
-    else:
-        return True
+
+    return True
 
 # ---------------------------------------------
 # -----------COMMAND CALLBACK -----------------
@@ -91,11 +94,11 @@ def start_callback(bot, update):
     lang_code = update.message.from_user.language_code
     print(separator)
     printLog("command: /start ",update.message.from_user)
-    bot.send_message(chat_id=update.message.chat_id, 
+    bot.send_message(chat_id=update.message.chat_id,
                         text="Hello " + str(update.message.from_user.first_name) + " " + str(update.message.from_user.last_name))
     # profil, options, help, add, revoke, news, complex search
     if(reject_bots(bot, update) == True):
-        bot.send_message(chat_id=update.message.chat_id, 
+        bot.send_message(chat_id=update.message.chat_id,
                             text=get_lang_string_by_code(lang_code, "WELCOME_MESSAGE"))
 
 # Handler
@@ -105,18 +108,18 @@ start_handler = CommandHandler("start", start_callback)
 # The Help function
 def help_callback(bot, update):
     lang_code = update.message.from_user.language_code
-    
+
     print(separator)
     printLog("command: /help ",update.message.from_user)
     if(reject_bots(bot, update) == True):
-        bot.send_message(chat_id=update.message.chat_id, 
+        bot.send_message(chat_id=update.message.chat_id,
                         text=get_lang_string_by_code(lang_code, "HELP_MESSAGE"))
 # Handler
 help_handler = CommandHandler("help", help_callback)
 
 # To send messageto some one init's Telegram
 def message_user(chatid, message):
-        bot.send_message(chat_id=chatid, 
+        bot.send_message(chat_id=chatid,
                         text=message)
 
 # ---------------------------------------------
@@ -131,17 +134,17 @@ def echo_callback(bot, update):
     lang_code = str(update.message.from_user.language_code)
 
     print(separator)
-    print("Request: ",update.message.from_user)
+    print("[+] Request: ",update.message.from_user)
     code = str(update.message.text)
     chatid = str(update.message.chat_id)
 
     if(reject_bots(bot, update) == True):
         if (len(code) > 15):
-            bot.send_message(chat_id=update.message.chat_id, 
+            bot.send_message(chat_id=update.message.chat_id,
                                 text=get_lang_string_by_code(lang_code, "REQUEST_TOO_LONG"))
         else:
             # correct_sentence = CorrectSentence(lang_code, to_find)
-            # print("Message: " , correct_sentence)
+            # print("[+] Message: " , correct_sentence)
             # print ("keywords: ", rake.clean(to_find, "./data/erase_word_list_"+lang_code+".txt"))
 
             # bot.send_message(chat_id=update.message.chat_id,
@@ -150,40 +153,41 @@ def echo_callback(bot, update):
 
             # On peut enchainer les lien avec des ','
             r_json = {}
-            
+
             conn = sqlite3.connect('./flashit.db')
             cur = conn.cursor()
-            
+
             cur.execute("SELECT * FROM flash WHERE code = ?", (code,))
             rows2 = cur.fetchall()
-            
+
             if (len(rows2) > 0):
                 r_json["status"] = "error"
             else:
                 cur = conn.cursor()
                 cur.execute("SELECT * FROM ping WHERE code = ?", (code,))
                 rows = cur.fetchall()
-                #print("rows: ", rows)
+                #print("[+] rows: ", rows)
                 if (len(rows) > 0):
-                    r_json["status"] = "success"
                     for row in rows:
-                        r_json["code"] = row[0]
-                        r_json["href"] = row[2]
-                        r_json["percent"] = row[1]
-                        r_json["price"] = row[2]
-                        #print(row)
+                        r_json = {
+                            "status": "success",
+                            "code": row[0],
+                            "href": row[2],
+                            "percent": row[1],
+                            "price": row[2]
+                        }
                 else:
                     r_json["status"] = "error"
-                
-            #print("r_json: ", r_json)
+
+            #print("[+] r_json: ", r_json)
             if r_json["status"] == "success":
-                _date = (str(datetime.now())).split('.')[0]
-                c = conn.cursor()
+                _date, c = (str(datetime.now())).split('.')[0], conn.cursor()
+
                 c.execute('INSERT INTO flash VALUES (?,?,?,?)', (chatid, code, update.message.from_user.username, _date))
                 conn.commit()
                 c.close()
-                
-                #print("------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + " \n-" + str(r_json["percent"]) + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n------------------")
+
+                #print("[+] ------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + " \n-" + str(r_json["percent"]) + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n------------------")
                 bot.send_message(chat_id=update.message.chat_id,
                                         text = "-----------------------------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n-----------------------------------------")
             else:
@@ -191,7 +195,7 @@ def echo_callback(bot, update):
                 bot.send_message(chat_id=update.message.chat_id,
                                     text="🤖# {} {}".format(get_lang_string_by_code(lang_code, "OUPS_URL_MESSAGE"), code))
 
-            print("Response sent successfully!")
+            print("[+] Response sent successfully!")
 
 # Create a command handler
 echo_handler = MessageHandler(Filters.text, echo_callback)
@@ -215,7 +219,7 @@ def menu_callback(bot, update):
     ]
     reply_markup = InlineKeyboardMarkup(button)
     if(reject_bots(bot, update) == True):
-        bot.send_message(chat_id=update.message.chat_id, 
+        bot.send_message(chat_id=update.message.chat_id,
                             text="Welcome to jeveu menu, please Choose something...",
                                 reply_markup=reply_markup)
 menu_handler = CommandHandler("menu", menu_callback)

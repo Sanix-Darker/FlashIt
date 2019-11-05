@@ -26,9 +26,9 @@ while True:
         r_json = {}
         #print("[+] rows: ", rows)
         if (len(rowsy) > 0):
-            r_json["status"] = "success"
             for rowy in rowsy:
                 r_json = {
+                    "status": "success",
                     "code": code,
                     "chatid": chatid,
                     "percent": rowy[1],

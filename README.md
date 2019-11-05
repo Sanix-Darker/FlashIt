@@ -4,23 +4,18 @@
 
 A nice system to be notify when there is soldes on products.
 
-# IMPORTANT NOTE:
+### IMPORTANT NOTE
 
 - This source code is only for Educational purpose, am not responsible of the bas use of this code.
 - This project is not yet running Online!
 
-# DEMO:
-
-- See a full test on [Youtube](https://www.youtube.com/watch?v=PrbXV9MFuto)
-
-
-# Features:
+## Features
 
 - A search engine.
 - A chat bot.
 - A background Job that fetch your requests.
 
-# How to deploy
+## How to deploy
 
 ```shell
 # Install requirements
@@ -46,13 +41,18 @@ python ./bot/main.py
 
 ```
 
-# Rendering:
+## DEMO
+
+- See a full test on [Youtube](https://www.youtube.com/watch?v=PrbXV9MFuto)
+
+## Rendering
 
 <img src="flashit.png">
 
-# Author
+
+### MIT LICENSE
+
+
+## Author
 
 - Sanix darker
-
-# MIT LICENSE
-

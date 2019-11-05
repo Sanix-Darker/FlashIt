@@ -338,8 +338,8 @@ document.getElementById("gogo").onclick = function(e){
                     "&find="+document.getElementById("search").value+
                     "&level="+document.getElementById("level").value+
                     "&price="+document.getElementById("price").value+
-                    "&category="+document.getElementById("category").value
-                    );
+                    "&category="+document.getElementById("category").value+
+                    "&not_contain="+(document.getElementById("not_contain").value.length === 0 ? "qscred243":document.getElementById("not_contain").value));
 
     xhr.responseType = 'json';
 
@@ -351,11 +351,11 @@ document.getElementById("gogo").onclick = function(e){
         if (xhr.status != 200) { // analyze HTTP status of the response
         alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
         } else { 
-            document.getElementById('results').innerHTML = "";  
+            document.getElementById('results').innerHTML = "";
             // show the result
             // alert(`Done, got ${xhr.response.length} bytes`); // responseText is the server
             //console.log(xhr.response);
-            document.getElementById("code").innerHTML = xhr.response.code;
+            document.getElementById("code").innerHTML = (xhr.response !== null ? xhr.response.code: "------");
             document.getElementById("estimated").innerHTML = xhr.response.fetched + " and " + xhr.response.filtered;
             var valuee = ""
             for(var i = 0, l = xhr.response.results.length; i < l; i++){

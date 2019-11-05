@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="Sanix darker">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
-    <link href="css/main.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
     <title>Flash It</title>
   </head>
   <body>
@@ -32,12 +32,28 @@
                   <span class="desc">Advanced Search</span>
                   <div class="row">
 
+
+                    <table style="width:100%">
+                      <tr>
+                        <td>
+                            <div class="input-field">
+                                <div class="input-select">
+                                  <label>
+                                    <span class="label">Should not contains these terms (Seperate with coma Ex : generic, black):</span>
+                                    <input type="text" id="not_contain" style="color:red;width:100%;display:block;padding:0;height:37px;" placeholder="Ex : generic, black, circular" />
+                                  </label>
+                                </div>
+                              </div>
+                        </td>
+                      </tr>
+                    </table>
+
                       <table style="width:100%">
                           <tr>
                             <td>
                               <div class="input-field">
                                 <div class="input-select">
-                                  <label><span class="label">Website:</span> 
+                                  <label><span class="label">Website:</span>
                                       <select id="host"></select>
                                   </label>
                                 </div>
@@ -131,7 +147,7 @@
       </div>
     </center>
 
-    <script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 
   </body>
 </html>

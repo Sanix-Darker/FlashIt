@@ -50,17 +50,25 @@ def index2():
         # Sent in GET requests
         host = request.args.get('host')
         find = str(request.args.get('find')).replace(" ", "+")
-        percent = request.args.get('percent')
+
+        try: percent = request.args.get('percent')
+        except Exception as es: percent = "0"
+
         try: level = int(request.args.get('level'))
         except Exception as es: level = 5
 
         try: category = request.args.get('category')
         except Exception as es: category = "0"
 
-        price = request.args.get('price')
+        try: price = request.args.get('price')
+        except Exception as es: price = "0"
 
         try: job = request.args.get('job')
         except Exception as es: job = None
+
+        not_contain = request.args.get('not_contain').split(",")
+
+        print("not_contain: ", not_contain)
 
         code = ""
         results_size = 0
@@ -81,25 +89,61 @@ def index2():
                     try:
                         print("[+] ---------------------------------- ")
                         print("[+] - Href: "+result["href"])
+                        # print("[+] result.text: ", result.text)
                         # print("[+] price: ", price)
                         # print("[+] percent: ", percent)
+                        # print("[+] child['class'][0]: ", child['class'][0])
+                        # print("[+] percent_classes: ", percent_classes)
+                        # print("[+] child['class'][0] in percent_classes: ", (child["class"][0] in percent_classes))
+                        # print("[+] float(percent): ", float(percent))
+                        # print("[+] child.text: ", child.text)
+                        # print("[+] (only_numbers(child.text)): ", (only_numbers(child.text)))
+                        # print("[+] float(only_numbers(child.text)): ", float(only_numbers(child.text)))
+                        # print("[+] any(ext.lower() in result.text.lower() for ext in not_contain): ", any(ext.lower() in result.text.lower() for ext in not_contain))
 
-                        if (price == "0" and percent != "0" and child["class"][0] in percent_classes and float(percent) <= float(only_numbers(child.text))):
-                            #print("[+] - Href: "+result["href"],">>>> ", child.text)
-                            json_results.append({"title": str(result.text), "href": str(result["href"]), "percent": float(only_numbers(child.text)), "price": 0})
+                        if (
+                            price == "0" and
+                            percent != "0" and
+                            child["class"][0] in percent_classes and
+                            float(percent) <= float(only_numbers(child.text)) and
+                            not any(ext.lower() in result.text.lower() for ext in not_contain)):
 
-                        elif(price != "0" and percent == "0" and child["class"][0] == "price" and "-old" not in child["class"]):
-                            the_pricechildren = child.findChildren("span" , recursive=True)
-                            product_price = int(the_pricechildren[0]["data-price"])
-                            # print("[+] product_price: ", product_price)
-                            # print('price.split("-")[1]: ', price.split("-")[1])
-                            # print('float(product_price): ', float(product_price))
-                            # print('(float(price.split("-")[1]) < float(product_price)): ', (float(price.split("-")[1]) > float(product_price)))
-                            if (child["class"][0] in price_classes and float(price.split("-")[1]) > float(product_price)):
-                                #print("[+] - Href: "+result["href"],">>>> ", child.text)
-                                json_results.append({"title": str(result.text), "href": str(result["href"]), "percent": 0, "price": product_price})
-                    except Exception as es:
-                        pass
+                            json_results.append({
+                                "title": str(result.text),
+                                "href": str(result["href"]),
+                                "percent": float(only_numbers(child.text)),
+                                "price": 0
+                            })
+
+                        elif(
+                            price != "0" and
+                            percent == "0" and
+                            child["class"][0] == "price" and
+                            "-old" not in child["class"] and
+                            not any(ext.lower() in result.text.lower() for ext in not_contain)):
+
+                            product_price = int(child.findChildren("span" , recursive=True)[0]["data-price"])
+
+                            if (
+                                child["class"][0] in price_classes and
+                                float(price.split("-")[1]) > float(product_price)):
+
+                                json_results.append({
+                                    "title": str(result.text),
+                                    "href": str(result["href"]),
+                                    "percent": 0,
+                                    "price": product_price
+                                })
+
+                        elif(price == "0" and percent == "0" and not any(ext.lower() in result.text.lower() for ext in not_contain)):
+
+                            json_results.append({
+                                "title": str(result.text),
+                                "href": str(result["href"]),
+                                "percent": 0,
+                                "price": int(child.findChildren("span" , recursive=True)[0]["data-price"])
+                            })
+                    except Exception as es: pass
             i = i + 1
 
         json_results = sorted(json_results, key=lambda k: k['price'])[::-1]

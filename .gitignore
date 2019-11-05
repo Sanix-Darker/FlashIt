@@ -3,3 +3,4 @@ flashit.db
 logs.log
 .vscode
 .history
+*__pycache__

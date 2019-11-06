@@ -11,7 +11,7 @@ print("[+] Flashit Job started...")
 print("[+] --------------------------------------")
 
 while True:
-    rand = random.randint(5, 20)
+    rand = random.randint(10, 30)
     print ("[+] rand: ", rand)
     time.sleep(rand)
     conn = sqlite3.connect('./flashit.db')
@@ -24,38 +24,62 @@ while True:
         cur.execute("SELECT * FROM ping WHERE code = ?", (row[1],))
         rowsy = cur.fetchall()
         r_json = {}
-        #print("[+] rows: ", rows)
+        #print("[+] rowsy: ", rowsy)
         if (len(rowsy) > 0):
             for rowy in rowsy:
+                #print("rowy: ", rowy)
                 r_json = {
                     "status": "success",
                     "code": code,
                     "chatid": chatid,
                     "percent": rowy[1],
                     "price": rowy[2],
-                    "search": rowy[2]
+                    "search": rowy[3],
+                    "not_contain": rowy[5],
+                    "must_contain": rowy[6],
+                    "category": rowy[7]
                 }
-
+            #print('r_json["search"].split("?q=")[1]: ', r_json["search"].split("?q=")[1])
             r = requests.get(
                 "http://127.0.0.1:7777/flash?job=yes&find="+
                 r_json["search"].split("?q=")[1]+
                 "&percent="+str(r_json["percent"])+
+                "&level=35"+
                 "&price="+str(r_json["price"])+
+                "&not_contain="+str(r_json["not_contain"])+
+                "&must_contain="+str(r_json["must_contain"])+
+                "&category="+str(r_json["category"])+
                 "&host="+r_json["search"].split("/catalog/?q=")[0]
             )
             ri = r.json()
 
-            print("[+] ri: ", ri)
+            #print("[+] ri: ", ri)
 
-            if len(ri["results"]) > 0:
-                message = "Results for "+code+": \n"
+            if (len(ri["results"]) > 0):
+                message = ""
                 for res in ri["results"]:
-                    valuee = str(res["percent"])
-                    if res["percent"] == 0: valuee = "-"+str(res["price"])+"%"
+                    not_contain = str(r_json["not_contain"]).split(",")
+                    must_contain = str(r_json["must_contain"]).split(",")
 
-                    message += "> [ "+valuee+" ] "+ res["title"] + "\n"+ res["href"]+"\n\n"
-                print("[+] message: ", message)
-                message_user(r_json["chatid"], message)
+                    if( not any(ext.lower() in res["title"].lower() for ext in not_contain) and
+                        any(ext.lower() in res["title"].lower() for ext in must_contain)):
+
+                        value = "< "+str(res['price'])+" F"
+                        if res['price'] == 0:
+                            value = "- "+str(res['percent'])+" %"
+
+                        message += "> [ "+value+" ] "+ res["title"] + "\n"+ res["href"]+"\n\n"
+                    else:
+                        print("[+] must_contain: {} and not_contain: {} rejections: ".format(must_contain, not_contain))
+
+                if len(message) > 5:
+                    print("[+] message: ", message)
+                    print(message_user(r_json["chatid"], str("Results for "+code+": \n"+str(message))))
+                    cur.execute("DELETE FROM ping WHERE code = ?", (row[1],))
+                    cur.execute("DELETE FROM flash WHERE code = ?", (row[1],))
+                    conn.commit()
+                    cur.close()
+
         else:
             r_json["status"] = "error"
 

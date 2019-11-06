@@ -47,7 +47,7 @@ python ./bot/main.py
 
 ## Rendering
 
-<img src="flashit.png">
+<img src="./screen.png">
 
 
 ### MIT LICENSE

@@ -339,7 +339,8 @@ document.getElementById("gogo").onclick = function(e){
                     "&level="+document.getElementById("level").value+
                     "&price="+document.getElementById("price").value+
                     "&category="+document.getElementById("category").value+
-                    "&not_contain="+(document.getElementById("not_contain").value.length === 0 ? "qscred243":document.getElementById("not_contain").value));
+                    "&not_contain="+(document.getElementById("not_contain").value.length === 0 ? "qscred243":document.getElementById("not_contain").value)+
+                    "&must_contain="+document.getElementById("must_contain").value);
 
     xhr.responseType = 'json';
 

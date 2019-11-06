@@ -16,6 +16,7 @@ import sqlite3
 import configparser as ConfigParser
 import json
 import os
+import requests
 
 conn = sqlite3.connect('./flashit.db')
 c = conn.cursor()
@@ -49,6 +50,9 @@ configParser.read(configFilePath)
 # Configs parameters
 TOKEN = configParser.get('flashitbot-config', 'token')
 
+
+thebot = None
+
 # Lang management
 def get_lang_string_by_code(lang_code, code):
     with open('lang/'+lang_code+'.json', 'r+', encoding='utf-8') as f:
@@ -71,6 +75,8 @@ def printLog(command, Telegram_user):
 
 # To rejects other bots that wanted to querry JeveuBot
 def reject_bots(bot, update):
+    #global thebot
+    #thebot = bot
     if(update.message.from_user.is_bot == True):
         logger.info(("OUPS BOT, not authorized here!"))
         bot.send_message(chat_id=update.message.chat_id,
@@ -91,6 +97,8 @@ def reject_bots(bot, update):
 # )
 # define a command callback function : /start
 def start_callback(bot, update):
+    #global thebot
+    #thebot = bot
     lang_code = update.message.from_user.language_code
     print(separator)
     printLog("command: /start ",update.message.from_user)
@@ -107,6 +115,8 @@ start_handler = CommandHandler("start", start_callback)
 
 # The Help function
 def help_callback(bot, update):
+    #global thebot
+    #thebot = bot
     lang_code = update.message.from_user.language_code
 
     print(separator)
@@ -117,10 +127,18 @@ def help_callback(bot, update):
 # Handler
 help_handler = CommandHandler("help", help_callback)
 
+
 # To send messageto some one init's Telegram
 def message_user(chatid, message):
-        bot.send_message(chat_id=chatid,
-                        text=message)
+        # global thebot
+        # thebot.send_message(chat_id=chatid,
+        #                 text=message)
+        payload = {
+            'chat_id': chatid,
+            'text': message
+        }
+        return requests.post("https://api.telegram.org/bot{token}/sendMessage".format(token=TOKEN),
+                             data=payload).content
 
 # ---------------------------------------------
 # -----------TEXT CALLBACK -----------------
@@ -129,8 +147,9 @@ def message_user(chatid, message):
 # Rake is for cleaning unnusual words
 # import rake
 
-import requests
 def echo_callback(bot, update):
+    #global thebot
+    #thebot = bot
     lang_code = str(update.message.from_user.language_code)
 
     print(separator)
@@ -189,7 +208,7 @@ def echo_callback(bot, update):
 
                 #print("[+] ------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + " \n-" + str(r_json["percent"]) + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n------------------")
                 bot.send_message(chat_id=update.message.chat_id,
-                                        text = "-----------------------------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + "%\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n-----------------------------------------")
+                                        text = "-----------------------------------------\nCode: "+r_json["code"]+"!\nLink: "+r_json["href"] + "\n\n"+get_lang_string_by_code(lang_code, "CODE_SAVED_MESSAGE")+"\n-----------------------------------------")
             else:
 
                 bot.send_message(chat_id=update.message.chat_id,
@@ -204,6 +223,8 @@ echo_handler = MessageHandler(Filters.text, echo_callback)
 # ---------------------------------------------
 # Managing Buttons Menu
 def menu_callback(bot, update):
+    #global thebot
+    #thebot = bot
     lang_code = update.message.from_user.language_code
     button = [
         [
@@ -225,6 +246,8 @@ def menu_callback(bot, update):
 menu_handler = CommandHandler("menu", menu_callback)
 
 def error(bot, update, error):
+    #global thebot
+    #thebot = bot
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 

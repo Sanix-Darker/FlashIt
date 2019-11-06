@@ -128,6 +128,14 @@ def help_callback(bot, update):
 help_handler = CommandHandler("help", help_callback)
 
 
+# def handle_message(bot, update):
+#     text = update.message.text
+#     if text == 'hello':
+#         update.message.reply_text('Hello {}'.format(update.message.from_user.first_name))
+
+# dispatcher.add_handler(MessageHandler(filters=Filters.text, callback=handle_message))
+
+
 # To send messageto some one init's Telegram
 def message_user(chatid, message):
         # global thebot

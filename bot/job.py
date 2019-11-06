@@ -11,7 +11,7 @@ print("[+] Flashit Job started...")
 print("[+] --------------------------------------")
 
 while True:
-    rand = random.randint(10, 30)
+    rand = random.randint(100, 500)
     print ("[+] rand: ", rand)
     time.sleep(rand)
     conn = sqlite3.connect('./flashit.db')
@@ -44,7 +44,7 @@ while True:
                 "http://127.0.0.1:7777/flash?job=yes&find="+
                 r_json["search"].split("?q=")[1]+
                 "&percent="+str(r_json["percent"])+
-                "&level=35"+
+                "&level=20"+
                 "&price="+str(r_json["price"])+
                 "&not_contain="+str(r_json["not_contain"])+
                 "&must_contain="+str(r_json["must_contain"])+

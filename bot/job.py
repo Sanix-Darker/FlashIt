@@ -57,9 +57,10 @@ while True:
 
             if (len(ri["results"]) > 0):
                 message = ""
+                not_contain = str(r_json["not_contain"]).split(",")
+                must_contain = str(r_json["must_contain"]).split(",")
                 for res in ri["results"]:
-                    not_contain = str(r_json["not_contain"]).split(",")
-                    must_contain = str(r_json["must_contain"]).split(",")
+
 
                     if( not any(ext.lower() in res["title"].lower() for ext in not_contain) and
                         any(ext.lower() in res["title"].lower() for ext in must_contain)):
@@ -72,7 +73,9 @@ while True:
                     else:
                         print("[+] must_contain: {} and not_contain: {} rejections: ".format(must_contain, not_contain))
 
-                if len(message) > 5:
+                if (len(message) > 5 and
+                    not any(ext.lower() in message.lower() for ext in not_contain) and
+                            any(ext.lower() in message.lower() for ext in must_contain)):
                     print("[+] message: ", message)
                     print(message_user(r_json["chatid"], str("Results for "+code+": \n"+str(message))))
                     cur.execute("DELETE FROM ping WHERE code = ?", (row[1],))
